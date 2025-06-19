@@ -33,10 +33,14 @@ function saveGmailToSheet() {
 }
 
 function shouldForwardMessage(from, body) {
-  const domainPattern = /@.*\.(nnn\.ed\.jp|nnn\.ac\.jp)/i;
+  // Extract only email addresses
+  const emailMatch = from.match(/<(.+?)>/);
+  const email = emailMatch ? emailMatch[1] : from;
+  
+  const domainPattern = /@nnn\.ed\.jp$|@nnn\.ac\.jp$/i;
   const keyword = "学校法人角川ドワンゴ学園";
 
-  return domainPattern.test(from) || body.includes(keyword);
+  return domainPattern.test(email) || body.includes(keyword);
 }
 
 function sendEmailToDiscord(message) {
